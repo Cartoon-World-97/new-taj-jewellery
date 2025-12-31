@@ -1,0 +1,161 @@
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700;800;900&family=Outfit:wght@300;400;500;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --gold-gradient: linear-gradient(135deg, #dcc981 0%, #cdaf4b 50%, #b99e44 100%);
+  --shimmer: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Outfit', sans-serif;
+  background: linear-gradient(to bottom, #0f0f0f, #1a1a1a);
+  color: #e8e8e8;
+  min-height: 100vh;
+}
+
+.gold-text {
+  background: var(--gold-gradient);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.gold-border {
+  border-image: var(--gold-gradient) 1;
+}
+
+.shimmer-effect {
+  background: var(--gold-gradient);
+  background-size: 200% 100%;
+  animation: shimmer 3s ease-in-out infinite;
+}
+
+@keyframes shimmer {
+  0%, 100% { background-position: 0% 0%; }
+  50% { background-position: 100% 0%; }
+}
+
+.glass-effect {
+  background: rgba(255, 255, 255, 0.03);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.gold-glow {
+  box-shadow: 0 0 20px rgba(205, 175, 75, 0.3);
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: #1a1a1a;
+}
+
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, #dcc981, #b99e44);
+  border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(180deg, #cdaf4b, #9a8339);
+}
+
+/* Form Inputs */
+input, textarea, select {
+  @apply bg-zinc-900 border border-zinc-800 rounded-lg px-4 py-2.5 text-white placeholder-zinc-500 focus:outline-none focus:border-gold-500 transition-colors;
+}
+
+/* Buttons */
+.btn-primary {
+  @apply bg-gradient-to-r from-gold-500 to-gold-600 text-black font-semibold px-6 py-2.5 rounded-lg hover:from-gold-600 hover:to-gold-700 transition-all duration-300 shadow-lg hover:shadow-gold-500/50;
+}
+
+.btn-secondary {
+  @apply bg-zinc-800 text-white font-semibold px-6 py-2.5 rounded-lg hover:bg-zinc-700 transition-all duration-300 border border-zinc-700;
+}
+
+.btn-danger {
+  @apply bg-red-600 text-white font-semibold px-6 py-2.5 rounded-lg hover:bg-red-700 transition-all duration-300 shadow-lg hover:shadow-red-500/50;
+}
+
+/* Cards */
+.card {
+  @apply glass-effect rounded-xl p-6 transition-all duration-300 hover:bg-white/5;
+}
+
+.card-bordered {
+  @apply card border-2 border-gold-500/30;
+}
+
+/* Tables */
+table {
+  @apply w-full text-left;
+}
+
+thead {
+  @apply bg-zinc-900 border-b-2 border-gold-500;
+}
+
+th {
+  @apply px-6 py-4 text-gold-500 font-semibold uppercase text-sm tracking-wider;
+}
+
+td {
+  @apply px-6 py-4 border-b border-zinc-800;
+}
+
+tbody tr {
+  @apply hover:bg-white/5 transition-colors;
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.fade-in {
+  animation: fadeIn 0.5s ease-in;
+}
+
+.slide-up {
+  animation: slideUp 0.4s ease-out;
+}
+
+/* Loading Spinner */
+.spinner {
+  border: 3px solid rgba(205, 175, 75, 0.1);
+  border-top: 3px solid #cdaf4b;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
