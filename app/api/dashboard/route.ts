@@ -5,44 +5,131 @@ export async function GET(request: NextRequest) {
   try {
     const db = await getDb();
 
-    // Get total transactions
-    const totalTransactions = await db.collection('transactions').countDocuments();
+    // Get total transactions from all three collections
+    const clientTransactionsCount = await db
+      .collection('clientsTransactions')
+      .countDocuments();
+    const employeeTransactionsCount = await db
+      .collection('employeeTransactions')
+      .countDocuments();
+    const remoteEmployeeTransactionsCount = await db
+      .collection('remoteEmployeeTransactions')
+      .countDocuments();
 
-    // Get total employees
-    const totalEmployees = await db
-      .collection('users')
-      .countDocuments({ role: 'employee' });
+    const totalTransactions =
+      clientTransactionsCount +
+      employeeTransactionsCount +
+      remoteEmployeeTransactionsCount;
 
-    // Get today's transactions
+    // Get total users from all collections
+    const totalClients = await db.collection('clients').countDocuments();
+    const totalEmployees = await db.collection('employees').countDocuments();
+    const totalRemoteEmployees = await db
+      .collection('remoteEmployees')
+      .countDocuments();
+
+    const totalUsers = totalClients + totalEmployees + totalRemoteEmployees;
+
+    // Get today's transactions from all three collections
     const today = new Date();
     today.setHours(0, 0, 0, 0);
     const todayString = today.toISOString().split('T')[0];
 
-    const todayTransactions = await db
-      .collection('transactions')
+    const todayClientTransactions = await db
+      .collection('clientsTransactions')
       .countDocuments({
         date: { $gte: todayString },
       });
 
-    // Calculate total gold amount
-    const transactions = await db.collection('transactions').find({}).toArray();
-    const totalGoldAmount = transactions.reduce(
-      (sum, t) => sum + (t.total?.gold || 0),
+    const todayEmployeeTransactions = await db
+      .collection('employeeTransactions')
+      .countDocuments({
+        date: { $gte: todayString },
+      });
+
+    const todayRemoteEmployeeTransactions = await db
+      .collection('remoteEmployeeTransactions')
+      .countDocuments({
+        date: { $gte: todayString },
+      });
+
+    const todayTransactions =
+      todayClientTransactions +
+      todayEmployeeTransactions +
+      todayRemoteEmployeeTransactions;
+
+    // Calculate total gold amount from all collections
+    const clientTransactions = await db
+      .collection('clientsTransactions')
+      .find({})
+      .toArray();
+    const employeeTransactions = await db
+      .collection('employeeTransactions')
+      .find({})
+      .toArray();
+    const remoteEmployeeTransactions = await db
+      .collection('remoteEmployeeTransactions')
+      .find({})
+      .toArray();
+
+    const allTransactions = [
+      ...clientTransactions,
+      ...employeeTransactions,
+      ...remoteEmployeeTransactions,
+    ];
+
+    const totalGoldAmount = allTransactions.reduce(
+      (sum, t) => sum + (t.goldamount || 0),
       0
     );
 
-    // Get recent transactions (last 10)
-    const recentTransactions = await db
-      .collection('transactions')
+    // Get recent transactions from all collections (last 10 combined)
+    const recentClientTransactions = await db
+      .collection('clientsTransactions')
       .find({})
       .sort({ createdAt: -1 })
       .limit(10)
       .toArray();
 
+    const recentEmployeeTransactions = await db
+      .collection('employeeTransactions')
+      .find({})
+      .sort({ createdAt: -1 })
+      .limit(10)
+      .toArray();
+
+    const recentRemoteEmployeeTransactions = await db
+      .collection('remoteEmployeeTransactions')
+      .find({})
+      .sort({ createdAt: -1 })
+      .limit(10)
+      .toArray();
+
+    // Combine and sort all recent transactions
+    const allRecentTransactions = [
+      ...recentClientTransactions.map((t) => ({ ...t, source: 'client' })),
+      ...recentEmployeeTransactions.map((t) => ({ ...t, source: 'employee' })),
+      ...recentRemoteEmployeeTransactions.map((t) => ({
+        ...t,
+        source: 'remoteEmployee',
+      })),
+    ];
+
+    // Sort by createdAt and take top 10
+    const recentTransactions = allRecentTransactions
+      .sort(
+        (a, b) =>
+          new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+      )
+      .slice(0, 10);
+
     return NextResponse.json({
       stats: {
         totalTransactions,
+        totalUsers,
         totalEmployees,
+        totalClients,
+        totalRemoteEmployees,
         todayTransactions,
         totalGoldAmount: totalGoldAmount.toFixed(3),
         recentTransactions,

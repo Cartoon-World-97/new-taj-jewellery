@@ -38,7 +38,7 @@ export default function EmployeesPage() {
   const fetchEmployees = async () => {
     try {
       const token = localStorage.getItem('token');
-      const response = await fetch('/api/employs', {
+      const response = await fetch('/api/remote-employs', {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -53,14 +53,14 @@ export default function EmployeesPage() {
   };
   const handleView = (id?: string) => {
     if (!id) return;
-    router.push(`/dashboard/employees/${id}`);
+    router.push(`/dashboard/remote-employees/${id}`);
   };
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
     try {
       const token = localStorage.getItem('token');
-      const url = '/api/employs';
+      const url = '/api/remote-employs';
       const method = editingEmployee ? 'PUT' : 'POST';
 
       const payload: any = {
@@ -113,7 +113,7 @@ export default function EmployeesPage() {
 
     try {
       const token = localStorage.getItem('token');
-      const response = await fetch(`/api/employs?id=${id}`, {
+      const response = await fetch(`/api/remote-employs?id=${id}`, {
         method: 'DELETE',
         headers: {
           Authorization: `Bearer ${token}`,
@@ -155,7 +155,7 @@ export default function EmployeesPage() {
       <div className="flex flex-col md:flex-row md:items-center md:justify-between">
         <div>
           <h1 className="text-3xl font-display font-bold gold-text mb-2">
-            Employees
+            Remote Employees
           </h1>
           <p className="text-zinc-400">Manage employee accounts and permissions</p>
         </div>

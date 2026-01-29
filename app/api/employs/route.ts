@@ -27,9 +27,9 @@ export async function GET(request: NextRequest) {
 export async function POST(request: NextRequest) {
   try {
     const data = await request.json();
-    const { name, email, phone } = data;
+    const { name, email, phone, lose, location } = data;
 
-    if (!name || !email || !phone) {
+    if (!name || !email || !phone || !lose || !location) {
       return NextResponse.json(
         { error: 'Missing required fields' },
         { status: 400 }
@@ -50,6 +50,11 @@ export async function POST(request: NextRequest) {
       name,
       email,
       phone: phone || '',
+      lose,
+      location,
+      department: "Employee",
+      total_money: 0,
+      total_gold: 0,
       createdAt: new Date(),
       updatedAt: new Date(),
     };
@@ -73,7 +78,7 @@ export async function POST(request: NextRequest) {
 export async function PUT(request: NextRequest) {
   try {
     const data = await request.json();
-    const { id, name, email,phone } = data;
+    const { id, name, email, phone, lose, location } = data;
 
     if (!id) {
       return NextResponse.json(
@@ -87,6 +92,8 @@ export async function PUT(request: NextRequest) {
       name,
       email,
       phone,
+      lose,
+      location,
       updatedAt: new Date(),
     };
     const result = await db

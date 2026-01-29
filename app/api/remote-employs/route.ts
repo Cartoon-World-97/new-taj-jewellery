@@ -8,7 +8,7 @@ export async function GET(request: NextRequest) {
   try {
     const db = await getDb();
     const users = await db
-      .collection('clients')
+      .collection('remoteEmployees')
       .find({})
       .project({ password: 0 })
       .toArray();
@@ -39,10 +39,10 @@ export async function POST(request: NextRequest) {
     const db = await getDb();
 
     // Check if user exists
-    const existingUser = await db.collection('clients').findOne({ email });
+    const existingUser = await db.collection('remoteEmployees').findOne({ email });
     if (existingUser) {
       return NextResponse.json(
-        { error: 'Client already exists' },
+        { error: 'User already exists' },
         { status: 409 }
       );
     }
@@ -52,17 +52,17 @@ export async function POST(request: NextRequest) {
       phone: phone || '',
       lose,
       location,
-      department: "Clients",
+      department: "Employee",
       total_money: 0,
       total_gold: 0,
       createdAt: new Date(),
       updatedAt: new Date(),
     };
 
-    const result = await db.collection('clients').insertOne(newUser);
+    const result = await db.collection('remoteEmployees').insertOne(newUser);
 
     return NextResponse.json({
-      message: 'Client created successfully',
+      message: 'Employee created successfully',
       userId: result.insertedId,
     });
   } catch (error) {
@@ -97,18 +97,18 @@ export async function PUT(request: NextRequest) {
       updatedAt: new Date(),
     };
     const result = await db
-      .collection('clients')
+      .collection('remoteEmployees')
       .updateOne({ _id: new ObjectId(id) }, { $set: updateData });
 
     if (result.matchedCount === 0) {
       return NextResponse.json(
-        { error: 'Client not found' },
+        { error: 'Employee not found' },
         { status: 404 }
       );
     }
 
     return NextResponse.json({
-      message: 'Client updated successfully',
+      message: 'Employee updated successfully',
     });
   } catch (error) {
     console.error('Error updating user:', error);
@@ -134,7 +134,7 @@ export async function DELETE(request: NextRequest) {
 
     const db = await getDb();
     const result = await db
-      .collection('clients')
+      .collection('remoteEmployees')
       .deleteOne({ _id: new ObjectId(id) });
 
     if (result.deletedCount === 0) {
@@ -145,7 +145,7 @@ export async function DELETE(request: NextRequest) {
     }
 
     return NextResponse.json({
-      message: 'Client deleted successfully',
+      message: 'Employee deleted successfully',
     });
   } catch (error) {
     console.error('Error deleting user:', error);

@@ -57,7 +57,7 @@ export default function LoginPage() {
               <FaGem className="text-4xl text-black" />
             </div>
             <h1 className="text-3xl font-display font-bold gold-text mb-2">
-              Raju Seakh Jewelry
+               Taj Jewelry
             </h1>
             <p className="text-zinc-400 font-body">Admin Panel Login</p>
           </div>

@@ -11,7 +11,10 @@ import {
   FaGem,
   FaBars,
   FaTimes,
+  FaUserClock,
+ 
 } from 'react-icons/fa';
+import { HiUsers } from 'react-icons/hi2';
 
 export default function Sidebar() {
   const pathname = usePathname();
@@ -34,11 +37,10 @@ export default function Sidebar() {
 
   const menuItems = [
     { href: '/dashboard', icon: FaHome, label: 'Dashboard' },
-    { href: '/dashboard/my-transactions', icon: FaFileInvoice, label: 'My Transactions', employeeOnly: true },
-    { href: '/dashboard/transactions', icon: FaFileInvoice, label: 'All Transactions', adminOnly: true },
-    { href: '/dashboard/employees', icon: FaUsers, label: 'Employees', adminOnly: true },
+    { href: '/dashboard/clients', icon: HiUsers , label: 'Clients', adminOnly: true },
+    { href: '/dashboard/employees', icon: FaUsers, label: 'Employees', adminOnly: true,employeeOnly: true },
+    { href: '/dashboard/remote-employees', icon: FaUserClock, label: 'Remote Employees', adminOnly: true },
     { href: '/dashboard/admins', icon: FaUsers, label: 'Admins', adminOnly: true},
-    { href: '/dashboard/permissions', icon: FaUsers, label: 'Permissions', adminOnly: true },
   ];
 
   const filteredItems = menuItems.filter(
