@@ -116,15 +116,6 @@ export default function LoginPage() {
               )}
             </button>
           </form>
-
-          {/* Demo Credentials */}
-          <div className="mt-6 p-4 bg-zinc-900/50 rounded-lg border border-zinc-800 slide-up" style={{ animationDelay: '0.2s' }}>
-            <p className="text-xs text-zinc-400 mb-2 font-semibold">Demo Credentials:</p>
-            <div className="text-xs text-zinc-500 space-y-1">
-              <p>Admin: admin@jewelry.com / admin123</p>
-              <p>Employee: employee@jewelry.com / employee123</p>
-            </div>
-          </div>
         </div>
 
         {/* Footer */}
