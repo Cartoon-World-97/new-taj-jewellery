@@ -120,7 +120,7 @@ export default function LoginPage() {
 
         {/* Footer */}
         <p className="text-center text-zinc-600 text-sm mt-6">
-          © 2025 Raju Seakh Jewelry. All rights reserved.
+          © 2025 Taj Jewelry. All rights reserved.
         </p>
       </div>
     </div>
