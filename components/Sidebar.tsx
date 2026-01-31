@@ -76,7 +76,7 @@ export default function Sidebar() {
               </div>
               <div>
                 <h1 className="text-xl font-display font-bold gold-text">
-                  Raju Seakh
+                  Taj
                 </h1>
                 <p className="text-xs text-zinc-500">Jewelry Store</p>
               </div>
